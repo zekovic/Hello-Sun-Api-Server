@@ -63,10 +63,6 @@ func getAndParse(lat, lon float64, uid int) AQIResponse {
 		return response
 	}
 	
-	/**wr, err = getWeatherFromJson(data)
-	if err != nil {
-		fmt.Printf("Err on JSON: %v", err)
-	}*/
 	return response
 }
 

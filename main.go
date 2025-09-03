@@ -44,10 +44,9 @@ func main() {
 	wg.Wait()
 	// http.ListenAndServe(server_str, mux)
 }
+
 func handleAqiInfo(w http.ResponseWriter, r *http.Request) {
-	//location := r.PathValue("loc")
-	//location := r.URL.Query().Get("location")
-	//fmt.Fprintf(w, "Basic info... %v", location)
+	
 	lat, err := strconv.ParseFloat(r.URL.Query().Get("lat"), 64)
 	if err != nil {
 		fmt.Printf("Err parsing latitude: %v", err)
@@ -77,11 +76,8 @@ func handleAqiInfo(w http.ResponseWriter, r *http.Request) {
 	airResponse.Values.PM10 = response.Data.IAQI.PM10.V
 	airResponse.Values.PM25 = response.Data.IAQI.PM25.V
 	
-	//fmt.Fprintf(w, "Response: %v", response)
-	//fmt.Fprintf(w, "<br/><br/><br/>DETAILS: %v", response.Data.AQI)
 	w.Header().Set("Content-Type", "application/json")
-	// enc := json.NewEncoder(w)
-	// enc.Encode(air_response)
+	
 	data, err := json.Marshal(airResponse)
 	if err != nil {
 		fmt.Println("Error while making config json. ", err)
@@ -89,6 +85,7 @@ func handleAqiInfo(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }
+
 func handleListLocations(w http.ResponseWriter, r *http.Request) {
 	// https://api.waqi.info/v2/map/bounds?latlng=39.379436,116.091230,40.235643,116.784382&networks=all&token=demo
 	lat, err := strconv.ParseFloat(r.URL.Query().Get("lat"), 64)
@@ -112,10 +109,5 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "IP: %v", addrArr[0])
 	}
 }
-
-/*func handleStop(w http.ResponseWriter, r *http.Request) {
-	wg.Done()
-	fmt.Fprintf(w, "Stopping server...")
-}*/
 
 
